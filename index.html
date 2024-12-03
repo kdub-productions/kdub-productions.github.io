@@ -1,46 +1,43 @@
-<!-- Songs Section -->
-<div class="songs-section">
-    <div class="grid-container">
-        <div class="grid-item">
-            <iframe src="https://www.youtube-nocookie.com/embed/XTTe5UjDwXY" 
-                title="YouTube video player" frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-            </iframe>
-            <p><strong>Song:</strong> Intro <br><strong>Artist:</strong> Kdub X Rahk The Ahk</p>
-        </div>
-        <div class="grid-item">
-            <iframe src="https://www.youtube-nocookie.com/embed/SEL1v-7lhwI" 
-                title="YouTube video player" frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-            </iframe>
-            <p><strong>Song:</strong> Battle <br><strong>Artist:</strong> Kdub X Rahk The Ahk</p>
-        </div>
-        <div class="grid-item">
-            <iframe src="https://www.youtube-nocookie.com/embed/d6AtMN7WOD8" 
-                title="YouTube video player" frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-            </iframe>
-            <p><strong>Song:</strong> Struggle <br><strong>Artist:</strong> Kdub X Rahk The Ahk</p>
-        </div>
-        <div class="grid-item">
-            <iframe src="https://www.youtube-nocookie.com/embed/Hi8UVclYgug" 
-                title="YouTube video player" frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-            </iframe>
-            <p><strong>Song:</strong> Outro <br><strong>Artist:</strong> Kdub X Rahk The Ahk</p>
-        </div>
-        <div class="grid-item">
-            <iframe src="https://www.youtube-nocookie.com/embed/fkunelu_fYU" 
-                title="YouTube video player" frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-            </iframe>
-            <p><strong>Song:</strong> Action Jackson <br><strong>Artist:</strong> Kdub X Rahk The Ahk</p>
-        </div>
-    </div>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kdub Productions</title>
+    <link rel="stylesheet" href="mainstyle.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="maindiv">
+        <!-- Header Section -->
+        <header class="header">
+            <h1 class="main-heading">Kdub Productions</h1>
+        </header>
 
+        <!-- Artist List (Sticky Navigation) -->
+        <nav class="artist-nav">
+            <h2 class="artist-header">Artists</h2>
+            <ul class="artist-list">
+                <li><a class="artist-link" href="kdub.html">Kdub</a></li>
+                <li><a class="artist-link">PrimoSKT</a></li>
+                <li><a class="artist-link">Rahk Da Ahk</a></li>
+            </ul>
+        </nav>
+
+        <!-- Songs Section (4x10 Grid Layout) -->
+        <main class="songs-section">
+            <div class="grid-container" id="video-grid">
+                <!-- Video Items (dynamically inserted by JavaScript) -->
+            </div>
+        </main>
+
+        <!-- Pagination Controls -->
+        <footer class="pagination">
+            <button id="prev-btn" class="btn" onclick="previousPage()">Previous</button>
+            <button id="next-btn" class="btn" onclick="nextPage()">Next</button>
+        </footer>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
