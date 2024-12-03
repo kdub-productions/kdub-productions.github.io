@@ -48,7 +48,7 @@
 /* Responsive Layout */
 @media screen and (max-width: 900px) {
     .artist_list {
-        gap: 20px; /* Reduce the gap for smaller screens */
+        gap: 10px; /* Reduce the gap for smaller screens */
     }
 
     .artist_list .name {
