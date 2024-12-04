@@ -67,10 +67,10 @@ body {
     top: 80px;
     background: linear-gradient(135deg, #4e4e4e, #2c3e50);
     padding: 15px 0;
-    z-index: 10;
+   
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
     border-radius: 10px;
-    transition: background 0.3s ease, box-shadow 0.3s ease;
+    transition: background- 0.3s ease, box-shadow 0.3s ease;
 }
 
 #artist_div_grid:hover {
@@ -176,6 +176,10 @@ body {
 
 /* Responsive Layout */
 @media screen and (max-width: 900px) {
+    .artist_list {
+        
+    }
+
     .grid-container {
         grid-template-columns: repeat(3, 1fr); /* 3 columns for smaller screens */
     }
@@ -186,6 +190,11 @@ body {
 }
 
 @media screen and (max-width: 600px) {
+    .artist_list {
+        display-inline:grid;
+        
+    }
+
     .grid-container {
         grid-template-columns: repeat(2, 1fr); /* 2 columns for mobile screens */
     }
