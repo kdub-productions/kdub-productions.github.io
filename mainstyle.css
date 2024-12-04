@@ -177,7 +177,8 @@ body {
 /* Responsive Layout */
 @media screen and (max-width: 900px) {
     .artist_list {
-        
+        width:25%;
+        background-color: red;
     }
 
     .grid-container {
@@ -191,7 +192,7 @@ body {
 
 @media screen and (max-width: 600px) {
     .artist_list { 
-        width:100%;
+        width:25%;
         background-color: red;
     }
 
