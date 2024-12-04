@@ -190,9 +190,9 @@ body {
 }
 
 @media screen and (max-width: 600px) {
-    .artist_list {
-        display-inline:grid;
-        
+    .artist_list { 
+        width:100%;
+        background-color: red;
     }
 
     .grid-container {
