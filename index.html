@@ -40,17 +40,20 @@
     <!-- JavaScript for Pagination -->
     <script>
         let currentPage = 1;
-        const videosPerPage = 10;
+        const videosPerPage = 12;
 
         // Sample video data (you can add more as needed)
         const videos = [
-            {src: "https://www.youtube-nocookie.com/embed/XTTe5UjDwXY?si=C29du_MFP6oFVEiv&amp;controls=0", title: "Intro", artist: "Kaleb May X Yung Rahk"},
-            {src: "https://www.youtube-nocookie.com/embed/SEL1v-7lhwI?si=IXBjOljBvkcr186E&amp;controls=0", title: "Battle", artist: "Kaleb May X Yung Rahk"},
-            {src: "https://www.youtube-nocookie.com/embed/d6AtMN7WOD8?si=dpJlYHUtUNpxbHmj&amp;controls=0", title: "Struggle", artist: "Kaleb May X Yung Rahk"},
-            {src: "https://www.youtube-nocookie.com/embed/fkunelu_fYU?si=4E-JXuN03QicjJGY&amp;controls=0", title: "Action Jackson", artist: "Kdub X Yung Rahk"},
-            {src: "https://www.youtube-nocookie.com/embed/Hi8UVclYgug?si=BgCyhIUqrOqLte3o&amp;controls=0", title: "Outro", artist: "Kaleb May X Yung Rahk"},
-            // Add more videos as required
-            //Reset Mixtape
+            //White Noise
+            {src: "https://www.youtube-nocookie.com/embed/oxYz65cnVbk?si=924yfe2Qnctpqjm7&amp;controls=0", title: "Run The Plate", artist: "Kaleb May"},
+            {src: "https://www.youtube-nocookie.com/embed/gFhH41ENibQ?si=_Yy3Z1mwekgiFnGH&amp;controls=0", title: "Off The Counter", artist: "Kaleb May X PrimoSKT"},
+            {src: "https://www.youtube-nocookie.com/embed/fuK0MTfF8fM?si=JNK-LuGVLCXP3s1l&amp;controls=0", title: "Dark Home", artist: "Kaleb May"},
+            {src: "https://www.youtube-nocookie.com/embed/R_puaUquID8?si=KZcTKW-rIxlTH7uq&amp;controls=0", title: "In My Zone", artist: "Kaleb May"},
+            {src: "https://www.youtube-nocookie.com/embed/N9tQa60KLEY?si=CBifU4aOHAFEfteR&amp;controls=0", title: "Heavy", artist: "Kaleb May X PrimoSKT"},
+            {src: "https://www.youtube-nocookie.com/embed/52HSmLfVabc?si=nzfgePcuG41J0NrL&amp;controls=0", title: "Out And About Around", artist: "Kaleb May"},
+            {src: "https://www.youtube-nocookie.com/embed/174uy-krpMk?si=KHYIOH-1_og92O7j&amp;controls=0", title: "Level Out", artist: "Kaleb May"},
+           
+        //Reset Mixtape
             {src: "https://www.youtube-nocookie.com/embed/yIZQOiL7pZ8?si=27WEqw4eSQZKkUJ1&amp;controls=0", title: "Bring Me Back", artist: "Kaleb May"},
             {src: "https://www.youtube-nocookie.com/embed/vEFs66U8aaE?si=gWjso41-HK_JCU9S&amp;controls=0", title: "Off The Rocket", artist: "Kaleb May X PrimoSKT"},
             {src: "https://www.youtube-nocookie.com/embed/uTFhogz8Kqs?si=vqFMo_n0o4sqzDdB&amp;controls=0", title: "Miss Me", artist: "Kaleb May X PrimoSKT"},
@@ -68,6 +71,13 @@
             {src: "https://www.youtube-nocookie.com/embed/axCdZE_wdNA?si=rUFB7Xu3FkTVrJ6u&amp;controls=0", title: "Return", artist: "Kaleb May"},
             {src: "https://www.youtube-nocookie.com/embed/awtPBdbeIRc?si=EitcNwQbsPYYFiE4&amp;controls=0", title: "Take No Chance", artist: "Kaleb May"},
             {src: "https://www.youtube-nocookie.com/embed/ap_luk8EBW8?si=BN5TkXc0TXEEmrFf&amp;controls=0", title: "Crashout", artist: "Kaleb May X T YO"},
+
+            //The Nightmare EP
+            {src: "https://www.youtube-nocookie.com/embed/XTTe5UjDwXY?si=C29du_MFP6oFVEiv&amp;controls=0", title: "Intro", artist: "Kaleb May X Yung Rahk"},
+            {src: "https://www.youtube-nocookie.com/embed/SEL1v-7lhwI?si=IXBjOljBvkcr186E&amp;controls=0", title: "Battle", artist: "Kaleb May X Yung Rahk"},
+            {src: "https://www.youtube-nocookie.com/embed/d6AtMN7WOD8?si=dpJlYHUtUNpxbHmj&amp;controls=0", title: "Struggle", artist: "Kaleb May X Yung Rahk"},
+            {src: "https://www.youtube-nocookie.com/embed/fkunelu_fYU?si=4E-JXuN03QicjJGY&amp;controls=0", title: "Action Jackson", artist: "Kdub X Yung Rahk"},
+            {src: "https://www.youtube-nocookie.com/embed/Hi8UVclYgug?si=BgCyhIUqrOqLte3o&amp;controls=0", title: "Outro", artist: "Kaleb May X Yung Rahk"},
         ];
 
         // Calculate total pages
