@@ -34,9 +34,14 @@
             </ul>
         </div>
 
-        <!-- Video Grid -->
-        <div class="songs_div">
+        <!-- Video Grid (for videos) -->
+        <div class="songs_div" id="videoGrid">
             <div class="grid-container" id="video-grid"></div>
+        </div>
+
+        <!-- Mixtape Grid (for mixtapes) -->
+        <div class="songs_div" id="mixtapeGrid" style="display:none;">
+            <div class="grid-container" id="mixtape-grid"></div>
         </div>
 
         <!-- Pagination -->
@@ -47,10 +52,11 @@
     </div>
 
     <script>
-        const apiKey = "AIzaSyBWXAiWVwtsv3lrMKC3eXSQs7UqjSVWLt8"; // Replace with your YouTube API key
-        const channelId = "UCxLInTOesiaJPHRcr-q56aQ"; // Replace with your YouTube channel ID
+        const apiKey = "YOUR_YOUTUBE_API_KEY"; // Replace with your YouTube API key
+        const channelId = "YOUR_CHANNEL_ID"; // Replace with your YouTube channel ID
         const videosPerPage = 12;
         let videos = [];
+        let playlists = [];
         let nextPageToken = "";
         let prevPageToken = "";
 
@@ -77,33 +83,84 @@
                 nextPageToken = data.nextPageToken || null;
                 prevPageToken = data.prevPageToken || null;
 
-                showPage();
+                showPage('videos');
             } catch (error) {
                 console.error("Fetch Error:", error);
                 alert("Failed to fetch videos. Check the console for details.");
             }
         }
 
-        // Display videos in the grid
-        function showPage() {
+        // Fetch playlists (mixtapes) from YouTube API
+        async function fetchMixtapes() {
+            const url = `https://www.googleapis.com/youtube/v3/playlists?key=${apiKey}&channelId=${channelId}&part=snippet&maxResults=5`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                // Check for API errors
+                if (data.error) {
+                    console.error("API Error:", data.error.message);
+                    alert("An error occurred: " + data.error.message);
+                    return;
+                }
+
+                // Extract playlist data
+                playlists = data.items.map((item) => ({
+                    title: item.snippet.title,
+                    url: `https://www.youtube.com/playlist?list=${item.id}`,
+                }));
+
+                showPage('mixtapes');
+            } catch (error) {
+                console.error("Fetch Error:", error);
+                alert("Failed to fetch mixtapes. Check the console for details.");
+            }
+        }
+
+        // Display videos or mixtapes in the grid
+        function showPage(pageType) {
             const videoGrid = document.getElementById("video-grid");
-            videoGrid.innerHTML = ""; // Clear current videos
+            const mixtapeGrid = document.getElementById("mixtape-grid");
+            
+            // Clear current content
+            videoGrid.innerHTML = "";
+            mixtapeGrid.innerHTML = "";
 
-            videos.forEach((video) => {
-                const gridItem = document.createElement("div");
-                gridItem.classList.add("grid-item");
+            if (pageType === 'videos') {
+                videos.forEach((video) => {
+                    const gridItem = document.createElement("div");
+                    gridItem.classList.add("grid-item");
 
-                const iframe = document.createElement("iframe");
-                iframe.src = video.src;
-                iframe.allowFullscreen = true;
+                    const iframe = document.createElement("iframe");
+                    iframe.src = video.src;
+                    iframe.allowFullscreen = true;
 
-                const description = document.createElement("p");
-                description.innerHTML = `<strong>Song:</strong> ${video.title}`;
+                    const description = document.createElement("p");
+                    description.innerHTML = `<strong>Song:</strong> ${video.title}`;
 
-                gridItem.appendChild(iframe);
-                gridItem.appendChild(description);
-                videoGrid.appendChild(gridItem);
-            });
+                    gridItem.appendChild(iframe);
+                    gridItem.appendChild(description);
+                    videoGrid.appendChild(gridItem);
+                });
+                document.getElementById("videoGrid").style.display = 'block';
+                document.getElementById("mixtapeGrid").style.display = 'none';
+            }
+
+            if (pageType === 'mixtapes') {
+                playlists.forEach((playlist) => {
+                    const gridItem = document.createElement("div");
+                    gridItem.classList.add("grid-item");
+
+                    const description = document.createElement("p");
+                    description.innerHTML = `<strong>Mixtape:</strong> <a href="${playlist.url}" target="_blank">${playlist.title}</a>`;
+
+                    gridItem.appendChild(description);
+                    mixtapeGrid.appendChild(gridItem);
+                });
+                document.getElementById("videoGrid").style.display = 'none';
+                document.getElementById("mixtapeGrid").style.display = 'block';
+            }
 
             updateButtonStates();
         }
@@ -122,6 +179,15 @@
             document.getElementById("prev-btn").style.display = prevPageToken ? "inline-block" : "none";
             document.getElementById("next-btn").style.display = nextPageToken ? "inline-block" : "none";
         }
+
+        // Handle tab changes
+        document.getElementById("videosTab").addEventListener('click', function() {
+            fetchVideos();
+        });
+
+        document.getElementById("mixtapesTab").addEventListener('click', function() {
+            fetchMixtapes();
+        });
 
         // Initial fetch
         fetchVideos();
