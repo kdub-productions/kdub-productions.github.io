@@ -14,18 +14,27 @@
             <p class="artist-header">Artists</p>
         </div>
 
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="tab-button" id="videosTab">Videos</button>
+            <button class="tab-button" id="mixtapesTab">Mixtapes</button>
+        </div>
+
         <!-- Search Bar -->
         <div class="search-bar">
-            <input type="text" id="search-input" placeholder="Search videos or mixtapes..." onkeyup="filterContent()">
+            <input type="text" id="searchInput" placeholder="Search for videos or mixtapes..." />
         </div>
 
-        <!-- Navigation Tab -->
-        <div class="nav-tabs">
-            <button class="tab-button" onclick="showTab('videos')">Videos</button>
-            <button class="tab-button" onclick="showTab('mixtapes')">Mixtapes</button>
+        <!-- Artist List -->
+        <div id="artist_div_grid">
+            <ul class="artist_list">
+                <li><a class="name" href="https://www.youtube.com/@KalebMay_1" target="_blank">Kaleb May</a></li>
+                <li><a class="name" href="https://www.youtube.com/@YungBlazer777" target="_blank">PrimoSKT</a></li>
+                <li><a class="name" href="https://www.youtube.com/@rahkYung Rahkarget=" target="_blank">Yung Rahk</a></li>
+            </ul>
         </div>
 
-        <!-- Content Section -->
+        <!-- Video Grid -->
         <div class="songs_div">
             <div class="grid-container" id="video-grid"></div>
         </div>
@@ -40,14 +49,12 @@
     <script>
         const apiKey = "AIzaSyBWXAiWVwtsv3lrMKC3eXSQs7UqjSVWLt8"; // Replace with your YouTube API key
         const channelId = "UCxLInTOesiaJPHRcr-q56aQ"; // Replace with your YouTube channel ID
-        const playlistId = "YOUR_PLAYLIST_ID"; // Replace with your playlist ID for mixtapes
         const videosPerPage = 12;
         let videos = [];
-        let mixtapes = [];
         let nextPageToken = "";
         let prevPageToken = "";
-        
-        // Fetch videos and mixtapes
+
+        // Fetch videos from YouTube API
         async function fetchVideos(pageToken = "") {
             const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet&type=video&maxResults=${videosPerPage}&pageToken=${pageToken}`;
 
@@ -77,53 +84,21 @@
             }
         }
 
-        // Fetch mixtapes (YouTube playlist items)
-        async function fetchMixtapes(pageToken = "") {
-            const url = `https://www.googleapis.com/youtube/v3/playlistItems?key=${apiKey}&playlistId=${playlistId}&part=snippet&maxResults=${videosPerPage}&pageToken=${pageToken}`;
-
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-
-                // Check for API errors
-                if (data.error) {
-                    console.error("API Error:", data.error.message);
-                    alert("An error occurred: " + data.error.message);
-                    return;
-                }
-
-                // Extract mixtape data
-                mixtapes = data.items.map((item) => ({
-                    src: `https://www.youtube.com/embed/${item.snippet.resourceId.videoId}`,
-                    title: item.snippet.title,
-                }));
-                nextPageToken = data.nextPageToken || null;
-                prevPageToken = data.prevPageToken || null;
-
-                showPage();
-            } catch (error) {
-                console.error("Fetch Error:", error);
-                alert("Failed to fetch mixtapes. Check the console for details.");
-            }
-        }
-
-        // Display videos or mixtapes
+        // Display videos in the grid
         function showPage() {
             const videoGrid = document.getElementById("video-grid");
-            videoGrid.innerHTML = ""; // Clear current content
+            videoGrid.innerHTML = ""; // Clear current videos
 
-            const content = (currentTab === "videos" ? videos : mixtapes);
-
-            content.forEach((item) => {
+            videos.forEach((video) => {
                 const gridItem = document.createElement("div");
                 gridItem.classList.add("grid-item");
 
                 const iframe = document.createElement("iframe");
-                iframe.src = item.src;
+                iframe.src = video.src;
                 iframe.allowFullscreen = true;
 
                 const description = document.createElement("p");
-                description.innerHTML = `<strong>Title:</strong> ${item.title}`;
+                description.innerHTML = `<strong>Song:</strong> ${video.title}`;
 
                 gridItem.appendChild(iframe);
                 gridItem.appendChild(description);
@@ -133,66 +108,19 @@
             updateButtonStates();
         }
 
-        // Switch between videos and mixtapes tabs
-        let currentTab = "videos"; // Default to videos
-        function showTab(tabName) {
-            currentTab = tabName;
-            if (tabName === "videos") {
-                fetchVideos();
-            } else if (tabName === "mixtapes") {
-                fetchMixtapes();
-            }
-        }
-
         // Handle pagination
         function nextPage() {
-            if (nextPageToken) {
-                if (currentTab === "videos") fetchVideos(nextPageToken);
-                else fetchMixtapes(nextPageToken);
-            }
+            if (nextPageToken) fetchVideos(nextPageToken);
         }
 
         function previousPage() {
-            if (prevPageToken) {
-                if (currentTab === "videos") fetchVideos(prevPageToken);
-                else fetchMixtapes(prevPageToken);
-            }
+            if (prevPageToken) fetchVideos(prevPageToken);
         }
 
         // Update pagination buttons
         function updateButtonStates() {
             document.getElementById("prev-btn").style.display = prevPageToken ? "inline-block" : "none";
             document.getElementById("next-btn").style.display = nextPageToken ? "inline-block" : "none";
-        }
-
-        // Search filter for videos and mixtapes
-        function filterContent() {
-            const query = document.getElementById("search-input").value.toLowerCase();
-            const content = (currentTab === "videos" ? videos : mixtapes);
-            const filteredContent = content.filter(item => item.title.toLowerCase().includes(query));
-            displayFilteredContent(filteredContent);
-        }
-
-        // Display the filtered content
-        function displayFilteredContent(filteredContent) {
-            const videoGrid = document.getElementById("video-grid");
-            videoGrid.innerHTML = ""; // Clear current content
-
-            filteredContent.forEach((item) => {
-                const gridItem = document.createElement("div");
-                gridItem.classList.add("grid-item");
-
-                const iframe = document.createElement("iframe");
-                iframe.src = item.src;
-                iframe.allowFullscreen = true;
-
-                const description = document.createElement("p");
-                description.innerHTML = `<strong>Title:</strong> ${item.title}`;
-
-                gridItem.appendChild(iframe);
-                gridItem.appendChild(description);
-                videoGrid.appendChild(gridItem);
-            });
         }
 
         // Initial fetch
