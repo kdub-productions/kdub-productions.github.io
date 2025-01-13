@@ -132,6 +132,11 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     text-align: center;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 .grid-item iframe {
@@ -139,13 +144,21 @@ body {
     height: 220px;
     border: none;
     border-radius: 10px;
+    margin-bottom: 10px;
 }
 
 .grid-item p {
-    margin-top: 15px;
+    margin: 0;
     font-size: 1rem;
     font-weight: 500;
     color: #ddd;
+    line-height: 1.2; /* Improve readability */
+    text-align: center;
+    word-wrap: break-word; /* Ensures long words break properly */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Adds an ellipsis if text overflows */
+    white-space: normal; /* Allow text to wrap to the next line */
+    padding: 0 10px; /* Add some padding to avoid touching the edges */
 }
 
 .grid-item p strong {
