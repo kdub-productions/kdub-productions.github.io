@@ -62,7 +62,6 @@
                 videos = data.items.map((item) => ({
                     src: `https://www.youtube.com/embed/${item.id.videoId}`,
                     title: item.snippet.title,
-                    artist: item.snippet.channelTitle,
                 }));
                 nextPageToken = data.nextPageToken || null;
                 prevPageToken = data.prevPageToken || null;
