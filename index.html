@@ -22,11 +22,9 @@
 
         <!-- Tab Contents -->
         <div class="tab-content active" id="videos-tab">
-            <!-- Videos Grid Here -->
             <div class="grid-container" id="video-grid"></div>
         </div>
         <div class="tab-content" id="mixtapes-tab">
-            <!-- Mixtapes Grid Here -->
             <div class="grid-container" id="mixtape-grid"></div>
         </div>
 
@@ -38,16 +36,17 @@
     </div>
 
     <script>
-        const apiKey = "YOUR_API_KEY"; // Replace with your YouTube API key
+        const apiKey = "AIzaSyBWXAiWVwtsv3lrMKC3eXSQs7UqjSVWLt8"; // Replace with your YouTube API key
         const channelId = "UCxLInTOesiaJPHRcr-q56aQ"; // Replace with your YouTube channel ID
         const videosPerPage = 12;
         let videos = [];
+        let playlists = [];
         let nextPageToken = "";
         let prevPageToken = "";
 
-        // Fetch videos from YouTube API
-        async function fetchVideos(pageToken = "", targetTab = "videos") {
-            const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet&type=video&maxResults=${videosPerPage}&pageToken=${pageToken}`;
+        // Fetch all playlists from the channel
+        async function fetchPlaylists(pageToken = "") {
+            const url = `https://www.googleapis.com/youtube/v3/playlists?key=${apiKey}&channelId=${channelId}&part=snippet&maxResults=${videosPerPage}&pageToken=${pageToken}`;
 
             try {
                 const response = await fetch(url);
@@ -60,54 +59,103 @@
                     return;
                 }
 
-                // Extract video data
-                videos = data.items.map((item) => ({
-                    src: `https://www.youtube.com/embed/${item.id.videoId}`,
+                // Extract playlist data
+                playlists = data.items.map((item) => ({
+                    id: item.id,
                     title: item.snippet.title,
-                    thumbnail: item.snippet.thumbnails.medium.url // Thumbnail image URL
+                    thumbnail: item.snippet.thumbnails.medium.url
                 }));
 
                 nextPageToken = data.nextPageToken || null;
                 prevPageToken = data.prevPageToken || null;
 
-                showPage(targetTab);
+                showPlaylists();
             } catch (error) {
                 console.error("Fetch Error:", error);
-                alert("Failed to fetch videos. Check the console for details.");
+                alert("Failed to fetch playlists. Check the console for details.");
             }
         }
 
-        // Display videos or thumbnails in the grid
-        function showPage(targetTab = "videos") {
-            const videoGrid = document.getElementById(targetTab === "videos" ? "video-grid" : "mixtape-grid");
-            videoGrid.innerHTML = ""; // Clear current content
+        // Display playlists as thumbnails
+        function showPlaylists() {
+            const gridContainer = document.getElementById("mixtape-grid");
+            gridContainer.innerHTML = ""; // Clear current content
+
+            playlists.forEach((playlist) => {
+                const gridItem = document.createElement("div");
+                gridItem.classList.add("grid-item");
+
+                const thumbnail = document.createElement("img");
+                thumbnail.src = playlist.thumbnail;
+                thumbnail.alt = playlist.title;
+                thumbnail.classList.add("mixtape-thumbnail");
+
+                const description = document.createElement("p");
+                description.textContent = playlist.title;
+
+                // Make the thumbnail clickable to show the playlist's videos
+                thumbnail.addEventListener('click', () => {
+                    fetchPlaylistVideos(playlist.id);
+                });
+
+                gridItem.appendChild(thumbnail);
+                gridItem.appendChild(description);
+
+                gridContainer.appendChild(gridItem);
+            });
+
+            updateButtonStates();
+        }
+
+        // Fetch videos from a specific playlist
+        async function fetchPlaylistVideos(playlistId) {
+            const url = `https://www.googleapis.com/youtube/v3/playlistItems?key=${apiKey}&playlistId=${playlistId}&part=snippet&maxResults=${videosPerPage}`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                // Check for API errors
+                if (data.error) {
+                    console.error("API Error:", data.error.message);
+                    alert("An error occurred: " + data.error.message);
+                    return;
+                }
+
+                // Extract video data from the playlist
+                videos = data.items.map((item) => ({
+                    src: `https://www.youtube.com/embed/${item.snippet.resourceId.videoId}`,
+                    title: item.snippet.title,
+                    thumbnail: item.snippet.thumbnails.medium.url
+                }));
+
+                showVideos();
+            } catch (error) {
+                console.error("Fetch Error:", error);
+                alert("Failed to fetch playlist videos. Check the console for details.");
+            }
+        }
+
+        // Show videos from the selected playlist
+        function showVideos() {
+            const gridContainer = document.getElementById("video-grid");
+            gridContainer.innerHTML = ""; // Clear current content
 
             videos.forEach((video) => {
                 const gridItem = document.createElement("div");
                 gridItem.classList.add("grid-item");
 
-                if (targetTab === "videos") {
-                    // Display full video with iframe if in the Videos tab
-                    const iframe = document.createElement("iframe");
-                    iframe.src = video.src;
-                    iframe.allowFullscreen = true;
+                const iframe = document.createElement("iframe");
+                iframe.src = video.src;
+                iframe.allowFullscreen = true;
 
-                    const description = document.createElement("p");
-                    description.innerHTML = `<strong>Song:</strong> ${video.title}`;
+                const description = document.createElement("p");
+                description.innerHTML = `<strong>Song:</strong> ${video.title}`;
 
-                    gridItem.appendChild(iframe);
-                    gridItem.appendChild(description);
-                } else {
-                    // Display only the thumbnail in the Mixtapes tab
-                    const thumbnail = document.createElement("img");
-                    thumbnail.src = video.thumbnail;
-                    thumbnail.alt = video.title;
-                    thumbnail.classList.add("mixtape-thumbnail");
+                gridItem.appendChild(iframe);
+                gridItem.appendChild(description);
 
-                    gridItem.appendChild(thumbnail);
-                }
-
-                videoGrid.appendChild(gridItem);
+                gridContainer.appendChild(gridItem);
             });
 
             updateButtonStates();
@@ -115,11 +163,15 @@
 
         // Handle pagination
         function nextPage() {
-            if (nextPageToken) fetchVideos(nextPageToken);
+            if (nextPageToken) {
+                fetchPlaylists(nextPageToken);
+            }
         }
 
         function previousPage() {
-            if (prevPageToken) fetchVideos(prevPageToken);
+            if (prevPageToken) {
+                fetchPlaylists(prevPageToken);
+            }
         }
 
         // Update pagination buttons
@@ -136,22 +188,16 @@
             tabButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     tabButtons.forEach(btn => btn.classList.remove('active'));
-                    tabContents.forEach(content => content.classList.remove('active', 'enter', 'leave'));
+                    tabContents.forEach(content => content.classList.remove('active'));
 
                     button.classList.add('active');
                     const targetContent = document.querySelector(button.getAttribute('data-target'));
-                    targetContent.classList.add('active', 'enter');
-
-                    const previousContent = document.querySelector('.tab-content.active:not(.enter)');
-                    if (previousContent) {
-                        previousContent.classList.add('leave');
-                    }
+                    targetContent.classList.add('active');
                 });
             });
-        });
 
-        // Initial fetch
-        fetchVideos();
+            fetchPlaylists(); // Initial fetch for playlists
+        });
     </script>
 </body>
 </html>
