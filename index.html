@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kdub Productions</title>
-    <link rel="stylesheet" type="text/css" href="mainstyle.css">
+    <link rel="stylesheet" href="mainstyle.css">
 </head>
 <body>
     <div id="maindiv">
@@ -16,31 +16,17 @@
 
         <!-- Navigation Tabs -->
         <div class="nav-tabs">
-            <button class="tab-button" id="videosTab">Videos</button>
-            <button class="tab-button" id="mixtapesTab">Mixtapes</button>
+            <button class="tab-button active" data-target="#videos-tab">Videos</button>
+            <button class="tab-button" data-target="#mixtapes-tab">Mixtapes</button>
         </div>
 
-        <!-- Search Bar -->
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Search for videos..." />
-        </div>
-
-        <!-- Artist List -->
-        <div id="artist_div_grid">
-            <ul class="artist_list">
-                <li><a class="name" href="https://www.youtube.com/@KalebMay_1" target="_blank">Kaleb May</a></li>
-                <li><a class="name" href="https://www.youtube.com/@YungBlazer777" target="_blank">PrimoSKT</a></li>
-                <li><a class="name" href="https://www.youtube.com/@rahkYung" target="_blank">Yung Rahk</a></li>
-            </ul>
-        </div>
-
-        <!-- Video Grid (for videos) -->
-        <div class="songs_div" id="videoGrid">
+        <!-- Tab Contents -->
+        <div class="tab-content active" id="videos-tab">
+            <!-- Videos Grid Here -->
             <div class="grid-container" id="video-grid"></div>
         </div>
-
-        <!-- Mixtape Grid (for mixtapes) -->
-        <div class="songs_div" id="mixtapeGrid" style="display: none;">
+        <div class="tab-content" id="mixtapes-tab">
+            <!-- Mixtapes Grid Here -->
             <div class="grid-container" id="mixtape-grid"></div>
         </div>
 
@@ -56,12 +42,11 @@
         const channelId = "UCxLInTOesiaJPHRcr-q56aQ"; // Replace with your YouTube channel ID
         const videosPerPage = 12;
         let videos = [];
-        let mixtapes = []; // New mixtapes array
         let nextPageToken = "";
         let prevPageToken = "";
 
         // Fetch videos from YouTube API
-        async function fetchVideos(pageToken = "") {
+        async function fetchVideos(pageToken = "", targetTab = "videos") {
             const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet&type=video&maxResults=${videosPerPage}&pageToken=${pageToken}`;
 
             try {
@@ -79,83 +64,53 @@
                 videos = data.items.map((item) => ({
                     src: `https://www.youtube.com/embed/${item.id.videoId}`,
                     title: item.snippet.title,
+                    thumbnail: item.snippet.thumbnails.medium.url // Thumbnail image URL
                 }));
+
                 nextPageToken = data.nextPageToken || null;
                 prevPageToken = data.prevPageToken || null;
 
-                showPage("videos"); // Show videos initially
+                showPage(targetTab);
             } catch (error) {
                 console.error("Fetch Error:", error);
                 alert("Failed to fetch videos. Check the console for details.");
             }
         }
 
-        // Fetch mixtapes from YouTube API
-        async function fetchMixtapes() {
-            const url = `https://www.googleapis.com/youtube/v3/playlists?key=${apiKey}&channelId=${channelId}&part=snippet&maxResults=${videosPerPage}`;
+        // Display videos or thumbnails in the grid
+        function showPage(targetTab = "videos") {
+            const videoGrid = document.getElementById(targetTab === "videos" ? "video-grid" : "mixtape-grid");
+            videoGrid.innerHTML = ""; // Clear current videos
 
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-
-                // Check for API errors
-                if (data.error) {
-                    console.error("API Error:", data.error.message);
-                    alert("An error occurred: " + data.error.message);
-                    return;
-                }
-
-                // Extract mixtape data
-                mixtapes = data.items.map((item) => ({
-                    src: `https://www.youtube.com/embed/?listType=playlist&list=${item.id}`,
-                    title: item.snippet.title,
-                }));
-
-                showPage("mixtapes"); // Show mixtapes when fetched
-            } catch (error) {
-                console.error("Fetch Error:", error);
-                alert("Failed to fetch mixtapes. Check the console for details.");
-            }
-        }
-
-        // Display videos or mixtapes
-        function showPage(type) {
-            const videoGrid = document.getElementById("videoGrid");
-            const mixtapeGrid = document.getElementById("mixtapeGrid");
-
-            if (type === "videos") {
-                videoGrid.style.display = "block";
-                mixtapeGrid.style.display = "none";
-                displayGrid(videos, "video-grid");
-            } else if (type === "mixtapes") {
-                mixtapeGrid.style.display = "block";
-                videoGrid.style.display = "none";
-                displayGrid(mixtapes, "mixtape-grid");
-            }
-
-            updateButtonStates();
-        }
-
-        // Display the grid of videos or mixtapes
-        function displayGrid(items, gridId) {
-            const gridContainer = document.getElementById(gridId);
-            gridContainer.innerHTML = ""; // Clear current items
-
-            items.forEach((item) => {
+            videos.forEach((video) => {
                 const gridItem = document.createElement("div");
                 gridItem.classList.add("grid-item");
 
-                const iframe = document.createElement("iframe");
-                iframe.src = item.src;
-                iframe.allowFullscreen = true;
+                if (targetTab === "videos") {
+                    // Display full video with iframe if in the Videos tab
+                    const iframe = document.createElement("iframe");
+                    iframe.src = video.src;
+                    iframe.allowFullscreen = true;
 
-                const description = document.createElement("p");
-                description.innerHTML = `<strong>Title:</strong> ${item.title}`;
+                    const description = document.createElement("p");
+                    description.innerHTML = `<strong>Song:</strong> ${video.title}`;
 
-                gridItem.appendChild(iframe);
-                gridItem.appendChild(description);
-                gridContainer.appendChild(gridItem);
+                    gridItem.appendChild(iframe);
+                    gridItem.appendChild(description);
+                } else {
+                    // Display only the thumbnail in the Mixtapes tab
+                    const thumbnail = document.createElement("img");
+                    thumbnail.src = video.thumbnail;
+                    thumbnail.alt = video.title;
+                    thumbnail.classList.add("mixtape-thumbnail");
+
+                    gridItem.appendChild(thumbnail);
+                }
+
+                videoGrid.appendChild(gridItem);
             });
+
+            updateButtonStates();
         }
 
         // Handle pagination
@@ -173,48 +128,30 @@
             document.getElementById("next-btn").style.display = nextPageToken ? "inline-block" : "none";
         }
 
-        // Event listeners for tab switches
-        document.getElementById("videosTab").addEventListener("click", function() {
-            showPage("videos");
-        });
-
-        document.getElementById("mixtapesTab").addEventListener("click", function() {
-            fetchMixtapes(); // Fetch mixtapes when the tab is clicked
-        });
-
-        // Initial fetch of videos
-        fetchVideos();
-
-        // Animations
-
+        // Add event listeners for tab switching
         document.addEventListener('DOMContentLoaded', () => {
-    // Select all tab buttons
-    const tabButtons = document.querySelectorAll('.tab-button');
-    const tabContents = document.querySelectorAll('.tab-content');
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
 
-    // Add event listeners to tab buttons
-    tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            // Remove active class from all tabs and contents
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            tabContents.forEach(content => {
-                content.classList.remove('active', 'enter', 'leave');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active', 'enter', 'leave'));
+
+                    button.classList.add('active');
+                    const targetContent = document.querySelector(button.getAttribute('data-target'));
+                    targetContent.classList.add('active', 'enter');
+
+                    const previousContent = document.querySelector('.tab-content.active:not(.enter)');
+                    if (previousContent) {
+                        previousContent.classList.add('leave');
+                    }
+                });
             });
-
-            // Add active class to clicked tab and show corresponding content
-            button.classList.add('active');
-            const targetContent = document.querySelector(button.getAttribute('data-target'));
-            targetContent.classList.add('active', 'enter');
-
-            // Add leave class to the previously active tab content
-            const previousContent = document.querySelector('.tab-content.active:not(.enter)');
-            if (previousContent) {
-                previousContent.classList.add('leave');
-            }
         });
-    });
-});
 
+        // Initial fetch
+        fetchVideos();
     </script>
 </body>
 </html>
