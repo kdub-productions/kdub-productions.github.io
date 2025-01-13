@@ -14,9 +14,10 @@
             <p class="artist-header">Artists</p>
         </div>
 
-        <!-- Navigation Tabs (Now only Video Tab) -->
+        <!-- Navigation Tabs -->
         <div class="nav-tabs">
             <button class="tab-button" id="videosTab">Videos</button>
+            <button class="tab-button" id="mixtapesTab">Mixtapes</button>
         </div>
 
         <!-- Search Bar -->
@@ -29,13 +30,18 @@
             <ul class="artist_list">
                 <li><a class="name" href="https://www.youtube.com/@KalebMay_1" target="_blank">Kaleb May</a></li>
                 <li><a class="name" href="https://www.youtube.com/@YungBlazer777" target="_blank">PrimoSKT</a></li>
-                <li><a class="name" href="https://www.youtube.com/@rahkYung Rahkarget=" target="_blank">Yung Rahk</a></li>
+                <li><a class="name" href="https://www.youtube.com/@rahkYung" target="_blank">Yung Rahk</a></li>
             </ul>
         </div>
 
         <!-- Video Grid (for videos) -->
         <div class="songs_div" id="videoGrid">
             <div class="grid-container" id="video-grid"></div>
+        </div>
+
+        <!-- Mixtape Grid (for mixtapes) -->
+        <div class="songs_div" id="mixtapeGrid" style="display: none;">
+            <div class="grid-container" id="mixtape-grid"></div>
         </div>
 
         <!-- Pagination -->
@@ -46,10 +52,11 @@
     </div>
 
     <script>
-        const apiKey = "YOUR_YOUTUBE_API_KEY"; // Replace with your YouTube API key
-        const channelId = "YOUR_CHANNEL_ID"; // Replace with your YouTube channel ID
+        const apiKey = "AIzaSyBWXAiWVwtsv3lrMKC3eXSQs7UqjSVWLt8"; // Replace with your YouTube API key
+        const channelId = "UCxLInTOesiaJPHRcr-q56aQ"; // Replace with your YouTube channel ID
         const videosPerPage = 12;
         let videos = [];
+        let mixtapes = []; // New mixtapes array
         let nextPageToken = "";
         let prevPageToken = "";
 
@@ -76,35 +83,79 @@
                 nextPageToken = data.nextPageToken || null;
                 prevPageToken = data.prevPageToken || null;
 
-                showPage();
+                showPage("videos"); // Show videos initially
             } catch (error) {
                 console.error("Fetch Error:", error);
                 alert("Failed to fetch videos. Check the console for details.");
             }
         }
 
-        // Display videos in the grid
-        function showPage() {
-            const videoGrid = document.getElementById("video-grid");
-            videoGrid.innerHTML = ""; // Clear current videos
+        // Fetch mixtapes from YouTube API
+        async function fetchMixtapes() {
+            const url = `https://www.googleapis.com/youtube/v3/playlists?key=${apiKey}&channelId=${channelId}&part=snippet&maxResults=${videosPerPage}`;
 
-            videos.forEach((video) => {
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                // Check for API errors
+                if (data.error) {
+                    console.error("API Error:", data.error.message);
+                    alert("An error occurred: " + data.error.message);
+                    return;
+                }
+
+                // Extract mixtape data
+                mixtapes = data.items.map((item) => ({
+                    src: `https://www.youtube.com/embed/?listType=playlist&list=${item.id}`,
+                    title: item.snippet.title,
+                }));
+
+                showPage("mixtapes"); // Show mixtapes when fetched
+            } catch (error) {
+                console.error("Fetch Error:", error);
+                alert("Failed to fetch mixtapes. Check the console for details.");
+            }
+        }
+
+        // Display videos or mixtapes
+        function showPage(type) {
+            const videoGrid = document.getElementById("videoGrid");
+            const mixtapeGrid = document.getElementById("mixtapeGrid");
+
+            if (type === "videos") {
+                videoGrid.style.display = "block";
+                mixtapeGrid.style.display = "none";
+                displayGrid(videos, "video-grid");
+            } else if (type === "mixtapes") {
+                mixtapeGrid.style.display = "block";
+                videoGrid.style.display = "none";
+                displayGrid(mixtapes, "mixtape-grid");
+            }
+
+            updateButtonStates();
+        }
+
+        // Display the grid of videos or mixtapes
+        function displayGrid(items, gridId) {
+            const gridContainer = document.getElementById(gridId);
+            gridContainer.innerHTML = ""; // Clear current items
+
+            items.forEach((item) => {
                 const gridItem = document.createElement("div");
                 gridItem.classList.add("grid-item");
 
                 const iframe = document.createElement("iframe");
-                iframe.src = video.src;
+                iframe.src = item.src;
                 iframe.allowFullscreen = true;
 
                 const description = document.createElement("p");
-                description.innerHTML = `<strong>Song:</strong> ${video.title}`;
+                description.innerHTML = `<strong>Title:</strong> ${item.title}`;
 
                 gridItem.appendChild(iframe);
                 gridItem.appendChild(description);
-                videoGrid.appendChild(gridItem);
+                gridContainer.appendChild(gridItem);
             });
-
-            updateButtonStates();
         }
 
         // Handle pagination
@@ -122,7 +173,16 @@
             document.getElementById("next-btn").style.display = nextPageToken ? "inline-block" : "none";
         }
 
-        // Initial fetch
+        // Event listeners for tab switches
+        document.getElementById("videosTab").addEventListener("click", function() {
+            showPage("videos");
+        });
+
+        document.getElementById("mixtapesTab").addEventListener("click", function() {
+            fetchMixtapes(); // Fetch mixtapes when the tab is clicked
+        });
+
+        // Initial fetch of videos
         fetchVideos();
     </script>
 </body>
