@@ -6,15 +6,6 @@
     <title>Kdub Productions</title>
     <link rel="stylesheet" type="text/css" href="mainstyle.css">
 </head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-562MV8XBTH"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-562MV8XBTH');
-</script>
 <body>
     <div id="maindiv">
         <!-- Header Section -->
@@ -23,7 +14,7 @@
             <p class="artist-header">Artists</p>
         </div>
 
-        <!-- Artist List (Sticky Navigation) -->
+        <!-- Artist List -->
         <div id="artist_div_grid">
             <ul class="artist_list">
                 <li><a class="name" href="https://www.youtube.com/@KalebMay_1" target="_blank">Kaleb May</a></li>
@@ -32,129 +23,98 @@
             </ul>
         </div>
 
-        <!-- Songs Section (4x10 Grid Layout) -->
+        <!-- Video Grid -->
         <div class="songs_div">
-            <div class="grid-container" id="video-grid">
-                <!-- Video Items (These will be dynamically inserted by JavaScript) -->
-            </div>
+            <div class="grid-container" id="video-grid"></div>
         </div>
 
-        <!-- Pagination Controls -->
+        <!-- Pagination -->
         <div class="pagination">
             <button id="prev-btn" onclick="previousPage()">Previous</button>
             <button id="next-btn" onclick="nextPage()">Next</button>
         </div>
     </div>
 
-    <!-- JavaScript for Pagination -->
     <script>
-        let currentPage = 1;
+        const apiKey = "AIzaSyBWXAiWVwtsv3lrMKC3eXSQs7UqjSVWLt8"; // Replace with your YouTube API key
+        const channelId = "UCxLInTOesiaJPHRcr-q56aQ"; // Replace with your YouTube channel ID
         const videosPerPage = 12;
+        let videos = [];
+        let nextPageToken = "";
+        let prevPageToken = "";
 
-        // Sample video data (you can add more as needed)
-        const videos = [
-        //White Noise
-            {src: "https://www.youtube-nocookie.com/embed/oxYz65cnVbk?si=924yfe2Qnctpqjm7&amp;controls=0", title: "Run The Plate", artist: "Kaleb May"},
-            {src: "https://www.youtube-nocookie.com/embed/gFhH41ENibQ?si=_Yy3Z1mwekgiFnGH&amp;controls=0", title: "Off The Counter", artist: "Kaleb May X PrimoSKT"},
-            {src: "https://www.youtube-nocookie.com/embed/fuK0MTfF8fM?si=JNK-LuGVLCXP3s1l&amp;controls=0", title: "Dark Home", artist: "Kaleb May"},
-            {src: "https://www.youtube-nocookie.com/embed/R_puaUquID8?si=KZcTKW-rIxlTH7uq&amp;controls=0", title: "In My Zone", artist: "Kaleb May"},
-            {src: "https://www.youtube-nocookie.com/embed/PEM4vAwsZmk?si=xrc_WZDdfp0rRl5i&amp;controls=0", title: "Heavy", artist: "Kaleb May X PrimoSKT"},
-            {src: "https://www.youtube-nocookie.com/embed/52HSmLfVabc?si=nzfgePcuG41J0NrL&amp;controls=0", title: "Out And About Around", artist: "Kaleb May"},
-            {src: "https://www.youtube-nocookie.com/embed/174uy-krpMk?si=KHYIOH-1_og92O7j&amp;controls=0", title: "Level Out", artist: "Kaleb May"},
-           
-        //Reset Mixtape
-            {src: "https://www.youtube-nocookie.com/embed/yIZQOiL7pZ8?si=27WEqw4eSQZKkUJ1&amp;controls=0", title: "Bring Me Back", artist: "Kaleb May"},
-            {src: "https://www.youtube-nocookie.com/embed/vEFs66U8aaE?si=gWjso41-HK_JCU9S&amp;controls=0", title: "Off The Rocket", artist: "Kaleb May X PrimoSKT"},
-            {src: "https://www.youtube-nocookie.com/embed/uTFhogz8Kqs?si=vqFMo_n0o4sqzDdB&amp;controls=0", title: "Miss Me", artist: "Kaleb May X PrimoSKT"},
-            {src: "https://www.youtube-nocookie.com/embed/vH-X0lZfmM0?si=4QzipwRDE3PVk8pr&amp;controls=0", title: "SLOW", artist: "Kaleb May"},
-            {src: "https://www.youtube-nocookie.com/embed/hdJ5MHO4DjE?si=3dA-3D7O1KjvuyqN&amp;controls=0", title: "3 Of Us", artist: "Kaleb May X Yung Rahk X PrimoSKT"},
-            {src: "https://www.youtube-nocookie.com/embed/ewVoT2QnJ9w?si=In-8YFNd0wx0i7jR&amp;controls=0", title: "Getting Good", artist: "Kaleb May X Yung Rahk X PrimoSKT"},
-            {src: "https://www.youtube-nocookie.com/embed/e2k9-lBIqqo?si=dS7r099qfxMknxWC&amp;controls=0", title: "Know Me For That Fact", artist: "Kaleb May X T YO"},
-            {src: "https://www.youtube-nocookie.com/embed/bThf4MAuXmY?si=-BpUnFRovCB7Ps4y&amp;controls=0", title: "New", artist: "Kaleb May"},
-            {src: "https://www.youtube-nocookie.com/embed/ZMRrqiLxLeA?si=r4QMmpPX_GR_vNfz&amp;controls=0", title: "Into My Eyes", artist: "Kaleb May"},
-            {src: "https://www.youtube-nocookie.com/embed/GZupBh-fU7Y?si=JVK-9XaZ0nnY12iW&amp;controls=0", title: "Aquaman", artist: "Kaleb May"},
-            {src: "https://www.youtube-nocookie.com/embed/RJpTpvlc_JM?si=B38ZZFc60EJW8UOA&amp;controls=0", title: "Watch Your Step", artist: "Kaleb May X PrimoSKT"},
-            {src: "https://www.youtube-nocookie.com/embed/KifFIemlKOs?si=3y7a0Y6-K04zii99&amp;controls=0", title: "One Shot", artist: "Kaleb May"},
-            {src: "https://www.youtube-nocookie.com/embed/Lhk2q1Fwru0?si=sBOjQv6dClJJ8odk&amp;controls=0", title: "Go Around You", artist: "Kaleb May X PrimoSKT"},
-            {src: "https://www.youtube-nocookie.com/embed/89cvQN8FfZ0?si=QqybsYlamjcsTSKN&amp;controls=0", title: "Keep Myself Up", artist: "Kaleb May"},
-            {src: "https://www.youtube-nocookie.com/embed/axCdZE_wdNA?si=rUFB7Xu3FkTVrJ6u&amp;controls=0", title: "Return", artist: "Kaleb May"},
-            {src: "https://www.youtube-nocookie.com/embed/awtPBdbeIRc?si=EitcNwQbsPYYFiE4&amp;controls=0", title: "Take No Chance", artist: "Kaleb May"},
-            {src: "https://www.youtube-nocookie.com/embed/ap_luk8EBW8?si=BN5TkXc0TXEEmrFf&amp;controls=0", title: "Crashout", artist: "Kaleb May X T YO"},
+        // Fetch videos from YouTube API
+        async function fetchVideos(pageToken = "") {
+            const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet&type=video&maxResults=${videosPerPage}&pageToken=${pageToken}`;
 
-         //The Nightmare EP
-            {src: "https://www.youtube-nocookie.com/embed/XTTe5UjDwXY?si=C29du_MFP6oFVEiv&amp;controls=0", title: "Intro", artist: "Kaleb May X Yung Rahk"},
-            {src: "https://www.youtube-nocookie.com/embed/SEL1v-7lhwI?si=IXBjOljBvkcr186E&amp;controls=0", title: "Battle", artist: "Kaleb May X Yung Rahk"},
-            {src: "https://www.youtube-nocookie.com/embed/d6AtMN7WOD8?si=dpJlYHUtUNpxbHmj&amp;controls=0", title: "Struggle", artist: "Kaleb May X Yung Rahk"},
-            {src: "https://www.youtube-nocookie.com/embed/fkunelu_fYU?si=4E-JXuN03QicjJGY&amp;controls=0", title: "Action Jackson", artist: "Kdub X Yung Rahk"},
-            {src: "https://www.youtube-nocookie.com/embed/Hi8UVclYgug?si=BgCyhIUqrOqLte3o&amp;controls=0", title: "Outro", artist: "Kaleb May X Yung Rahk"},
-        ];
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
 
-        // Calculate total pages
-        const totalPages = Math.ceil(videos.length / videosPerPage);
+                // Check for API errors
+                if (data.error) {
+                    console.error("API Error:", data.error.message);
+                    alert("An error occurred: " + data.error.message);
+                    return;
+                }
 
-        // Function to show the videos for the current page
-        function showPage(page) {
-            currentPage = page;
+                // Extract video data
+                videos = data.items.map((item) => ({
+                    src: `https://www.youtube.com/embed/${item.id.videoId}`,
+                    title: item.snippet.title,
+                    artist: item.snippet.channelTitle,
+                }));
+                nextPageToken = data.nextPageToken || null;
+                prevPageToken = data.prevPageToken || null;
+
+                showPage();
+            } catch (error) {
+                console.error("Fetch Error:", error);
+                alert("Failed to fetch videos. Check the console for details.");
+            }
+        }
+
+        // Display videos in the grid
+        function showPage() {
             const videoGrid = document.getElementById("video-grid");
             videoGrid.innerHTML = ""; // Clear current videos
 
-            // Generate the videos for the current page
-            for (let i = (currentPage - 1) * videosPerPage; i < currentPage * videosPerPage; i++) {
-                if (i >= videos.length) break; // Stop if we reach the end of the video list
-
-                const iframe = document.createElement("iframe");
-                iframe.src = videos[i].src; // Using the privacy-enhanced mode URL
-                iframe.allowFullscreen = true;
-                iframe.classList.add("grid-item");
-
-                const description = document.createElement("p");
-                description.innerHTML = `<strong>Song:</strong> ${videos[i].title} <br><strong>Artist:</strong> ${videos[i].artist}`;
-
+            videos.forEach((video) => {
                 const gridItem = document.createElement("div");
                 gridItem.classList.add("grid-item");
+
+                const iframe = document.createElement("iframe");
+                iframe.src = video.src;
+                iframe.allowFullscreen = true;
+
+                const description = document.createElement("p");
+                description.innerHTML = `<strong>Song:</strong> ${video.title} <br><strong>Artist:</strong> ${video.artist}`;
+
                 gridItem.appendChild(iframe);
                 gridItem.appendChild(description);
-
                 videoGrid.appendChild(gridItem);
-            }
+            });
 
-            // Update button states based on the current page
             updateButtonStates();
         }
 
-        // Function to go to the next page
+        // Handle pagination
         function nextPage() {
-            if (currentPage < totalPages) {
-                showPage(currentPage + 1);
-            }
+            if (nextPageToken) fetchVideos(nextPageToken);
         }
 
-        // Function to go to the previous page
         function previousPage() {
-            if (currentPage > 1) {
-                showPage(currentPage - 1);
-            }
+            if (prevPageToken) fetchVideos(prevPageToken);
         }
 
-        // Function to update the states of the pagination buttons
+        // Update pagination buttons
         function updateButtonStates() {
-            const prevBtn = document.getElementById("prev-btn");
-            const nextBtn = document.getElementById("next-btn");
-
-            // Disable the previous button on the first page
-            prevBtn.disabled = currentPage === 1;
-            prevBtn.style.display = currentPage === 1 ? "none" : "inline-block"; // Hide the button if on the first page
-
-            // Hide the next button when we reach the last page
-            nextBtn.style.display = currentPage === totalPages ? "none" : "inline-block"; // Hide the button if on the last page
+            document.getElementById("prev-btn").style.display = prevPageToken ? "inline-block" : "none";
+            document.getElementById("next-btn").style.display = nextPageToken ? "inline-block" : "none";
         }
 
-        // Initially show the first page
-        showPage(currentPage);
+        // Initial fetch
+        fetchVideos();
     </script>
-    
-
-
 </body>
 </html>
-
