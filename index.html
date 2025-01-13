@@ -38,7 +38,7 @@
     </div>
 
     <script>
-        const apiKey = "AIzaSyBWXAiWVwtsv3lrMKC3eXSQs7UqjSVWLt8"; // Replace with your YouTube API key
+        const apiKey = "YOUR_API_KEY"; // Replace with your YouTube API key
         const channelId = "UCxLInTOesiaJPHRcr-q56aQ"; // Replace with your YouTube channel ID
         const videosPerPage = 12;
         let videos = [];
@@ -80,7 +80,7 @@
         // Display videos or thumbnails in the grid
         function showPage(targetTab = "videos") {
             const videoGrid = document.getElementById(targetTab === "videos" ? "video-grid" : "mixtape-grid");
-            videoGrid.innerHTML = ""; // Clear current videos
+            videoGrid.innerHTML = ""; // Clear current content
 
             videos.forEach((video) => {
                 const gridItem = document.createElement("div");
