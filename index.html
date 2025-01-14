@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="mainstyle.css">
 </head>
 <body>
+    <div id="artist_div_grid">
+        <ul class="artist_list">
+            <li><a class="name" href="https://www.youtube.com/@KDUB_25">Kdub</a></li>
+            <li><a class="name">PrimoSKT</a></li>
+            <li><a class="name">Rahk Da Ahk</a></li>
+        </ul>
+    </div>
+    <!-- Videos -->
     <div class="grid-container" id="video-grid"></div>
 
     <div class="pagination">
@@ -14,90 +22,7 @@
         <button id="next-btn" onclick="nextPage()">Next</button>
     </div>
 
-    <script>
-        const apiKey = 'AIzaSyBWXAiWVwtsv3lrMKC3eXSQs7UqjSVWLt8';
-        const channelId = 'UCxLInTOesiaJPHRcr-q56aQ';
-        const videosPerPage = 12;
-        let nextPageToken = '';
-        let prevPageToken = '';
-        let videos = [];
-
-        async function fetchVideos(pageToken = '') {
-            const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet&type=video&maxResults=${videosPerPage}&pageToken=${pageToken}`;
-
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-
-                if (data.error) {
-                    console.error("API Error:", data.error.message);
-                    alert("An error occurred: " + data.error.message);
-                    return;
-                }
-
-                videos = data.items.map(item => ({
-                    src: `https://www.youtube.com/embed/${item.id.videoId}`,
-                    title: item.snippet.title,
-                    thumbnail: item.snippet.thumbnails.medium.url,
-                }));
-
-                nextPageToken = data.nextPageToken || null;
-                prevPageToken = data.prevPageToken || null;
-
-                showPage();
-            } catch (error) {
-                console.error("Fetch Error:", error);
-                alert("Failed to fetch videos. Check the console for details.");
-            }
-        }
-
-        function showPage() {
-            const videoGrid = document.getElementById("video-grid");
-            videoGrid.innerHTML = "";
-
-            videos.forEach((video) => {
-                const gridItem = document.createElement("div");
-                gridItem.classList.add("grid-item");
-
-                const iframe = document.createElement("iframe");
-                iframe.src = video.src;
-                iframe.allowFullscreen = true;
-                iframe.loading = 'lazy';
-
-                const thumbnail = document.createElement("img");
-                thumbnail.src = video.thumbnail;
-                thumbnail.alt = video.title;
-                thumbnail.loading = 'lazy';
-
-                const description = document.createElement("p");
-                description.innerHTML = `<strong>Title:</strong> ${video.title}`;
-
-                gridItem.appendChild(thumbnail);
-                gridItem.appendChild(description);
-                videoGrid.appendChild(gridItem);
-            });
-
-            updateButtonStates();
-        }
-
-        function nextPage() {
-            if (nextPageToken) {
-                fetchVideos(nextPageToken);
-            }
-        }
-
-        function previousPage() {
-            if (prevPageToken) {
-                fetchVideos(prevPageToken);
-            }
-        }
-
-        function updateButtonStates() {
-            document.getElementById("prev-btn").style.display = prevPageToken ? "inline-block" : "none";
-            document.getElementById("next-btn").style.display = nextPageToken ? "inline-block" : "none";
-        }
-
-        fetchVideos();
-    </script>
+    <script src="mainpage.js"></script>
+    <script src="optimize.js"></script>
 </body>
 </html>
