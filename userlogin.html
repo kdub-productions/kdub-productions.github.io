@@ -33,7 +33,7 @@
       <li><a href="userlogin.html">Login/Signup</a></li>
     </ul>
   </nav>
-
+  <div class="burger">&#9776;</div>
   <!-- Login Form -->
   <div class="login-container">
     <h1>Login</h1>
@@ -50,7 +50,18 @@
     </form> 
     <p>Don't have an account? <a href="/signup">Sign up</a></p>
   </div>
+  <script src="theme.js" defer></script>
+  <script src="optimize.js" defer></script>
 
+  <script>
+    // Burger menu toggle functionality
+    const burger = document.querySelector('.burger');
+    const navbar = document.querySelector('.navbar');
+  
+    burger.addEventListener('click', () => {
+      navbar.classList.toggle('active');  // Toggle the active class to show/hide the navbar items
+    });
+  </script>   
   <script>
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();

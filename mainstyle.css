@@ -52,6 +52,47 @@ body {
   color: #ffeb3b;
 }
 
+/* Mobile - For smaller screens, stack the navbar items vertically */
+@media (max-width: 768px) {
+  .navbar ul {
+    display: none; /* Initially hide the menu items */
+    flex-direction: column; /* Stack the items vertically */
+    width: 100%; /* Make items take full width */
+  }
+
+  .navbar li {
+    width: 100%; /* Each item takes full width */
+    text-align: left;
+  }
+
+  .navbar a {
+    padding: 10px 20px;
+  }
+
+  .navbar.active ul {
+    display: block; /* Display the menu when navbar is active */
+  }
+}
+
+/* Optional: Add a burger menu for mobile view */
+.burger {
+  display: none;
+  cursor: pointer;
+  color: white;
+  font-size: 24px;
+  padding: 10px;
+}
+
+/* When the screen width is below 768px, show the burger menu */
+@media (max-width: 768px) {
+  .burger {
+    display: block;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+}
+
 /* Dropdown Menu */
 .navbar li ul.dropdown {
   position: absolute;

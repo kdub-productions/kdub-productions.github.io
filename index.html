@@ -38,6 +38,7 @@
             <li><a href="#contact">Contact</a></li>
             <li><a href="userlogin.html" target="_blank">Login/Signup</a></li>
         </ul>
+        <div class="burger">&#9776;</div>
     </nav>
 
     <!-- Videos -->
@@ -46,12 +47,21 @@
         <button id="prev-btn">Previous</button>
         <button id="next-btn">Next</button>
     </div>
-    <script src="theme.js" defer></script>
     <script src="mainpage.js" defer></script>
+    <script src="theme.js" defer></script>
     <script src="optimize.js" defer></script>
     <script>
         document.getElementById('prev-btn').addEventListener('click', previousPage);
         document.getElementById('next-btn').addEventListener('click', nextPage);
     </script>
+    <script>
+        // Burger menu toggle functionality
+        const burger = document.querySelector('.burger');
+        const navbar = document.querySelector('.navbar');
+      
+        burger.addEventListener('click', () => {
+          navbar.classList.toggle('active');  // Toggle the active class to show/hide the navbar items
+        });
+      </script>      
 </body>
 </html>
