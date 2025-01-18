@@ -62,7 +62,7 @@ body {
 
   .navbar li {
     width: 100%; /* Each item takes full width */
-    text-align: left;
+    text-align: center;
   }
 
   .navbar a {
@@ -88,8 +88,8 @@ body {
   .burger {
     display: block;
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: -10px;
+    right: 10px;
   }
 }
 
