@@ -1,133 +1,3 @@
-/* Base Styles */
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background: linear-gradient(to right, var(--background-color), var(--gradient-color));
-  color: var(--text-color);
-  text-align: center;
-}
-
-.companyname {
-  font-size: 2.5em;
-  font-weight: bold;
-  margin: 20px;
-  text-transform: uppercase;
-  color: #007BFF;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
-}
-
-/* Navigation Bar */
-.navbar {
-  background: linear-gradient(to bottom, #007BFF, #0056b3);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-}
-
-.navbar ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-}
-
-.navbar li {
-  position: relative;
-}
-
-.navbar a {
-  display: block;
-  padding: 10px 20px;
-  text-decoration: none;
-  color: white;
-  font-weight: bold;
-  text-transform: uppercase;
-  font-size: 1em;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.navbar a:hover {
-  background-color: #0056b3;
-  color: #ffeb3b;
-}
-
-/* Mobile - For smaller screens, stack the navbar items vertically */
-@media (max-width: 768px) {
-  .navbar ul {
-    display: none; /* Initially hide the menu items */
-    flex-direction: column; /* Stack the items vertically */
-    width: 100%; /* Make items take full width */
-  }
-
-  .navbar li {
-    width: 100%; /* Each item takes full width */
-    text-align: center;
-  }
-
-  .navbar a {
-    padding: 10px 20px;
-  }
-
-  .navbar.active ul {
-    display: block; /* Display the menu when navbar is active */
-  }
-}
-
-/* Optional: Add a burger menu for mobile view */
-.burger {
-  display: none;
-  cursor: pointer;
-  color: white;
-  font-size: 24px;
-  padding: 10px;
-}
-
-/* When the screen width is below 768px, show the burger menu */
-@media (max-width: 768px) {
-  .burger {
-    display: block;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-  }
-}
-
-/* Dropdown Menu */
-.navbar li ul.dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  display: none;
-  min-width: 150px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-}
-
-.navbar li:hover ul.dropdown {
-  display: block;
-}
-
-.navbar li ul.dropdown li {
-  width: 100%;
-}
-
-.navbar li ul.dropdown a {
-  padding: 10px;
-  color: #333;
-  font-weight: normal;
-  text-transform: none;
-}
-
-.navbar li ul.dropdown a:hover {
-  background: #f7f7f7;
-  color: #007BFF;
-}
-
-/* Video Grid */
 .grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -138,7 +8,6 @@ body {
   box-sizing: border-box;
 }
 
-/* Pagination Buttons */
 .pagination button {
   background-color: #007BFF;
   color: white;
@@ -154,26 +23,6 @@ body {
   background-color: #0056b3;
   transform: scale(1.05);
 }
-
-/* Theme Variables */
-:root {
-  --background-color: #e4e4e4;
-  --gradient-color: #c8c8c8;
-  --text-color: #333;
-  --primary-color: #007BFF;
-  --primary-dark: #0056b3;
-  --accent-color: #ffeb3b;
-}
-
-[data-theme="dark"] {
-  --background-color: #121212;
-  --gradient-color: #1e1e1e;
-  --text-color: #e4e4e4;
-  --primary-color: #1e90ff;
-  --primary-dark: #1c7ed6;
-  --accent-color: #ffe066;
-}
-
 
 .container {
   display: flex;
@@ -257,7 +106,7 @@ button {
   background: #4e54c8;
   color: #fff;
   cursor: pointer;
-  transition: background 0.3s;
+  transition:zs 0.3s;
 }
 
 button:hover {

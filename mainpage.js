@@ -22,18 +22,15 @@ async function fetchVideos(pageToken = '') {
             return;
         }
 
-        // Map the API data to an array of video objects
         videos = data.items.map(item => ({
             src: `https://www.youtube.com/embed/${item.id.videoId}`,
             title: item.snippet.title,
             thumbnail: item.snippet.thumbnails.medium.url,
         }));
 
-        // Update pagination tokens
         nextPageToken = data.nextPageToken || '';
         prevPageToken = data.prevPageToken || '';
 
-        // Render the videos
         showPage();
     } catch (error) {
         console.error("Fetch Error:", error);
@@ -43,27 +40,24 @@ async function fetchVideos(pageToken = '') {
 
 function showPage() {
     const videoGrid = document.getElementById("video-grid");
-    videoGrid.innerHTML = ""; // Clear previous videos
+    videoGrid.innerHTML = ""; 
 
-    // Render each video item
     videos.forEach(video => {
         const gridItem = document.createElement("div");
         gridItem.classList.add("grid-item");
 
-        // Create thumbnail element
+        
         const thumbnail = document.createElement("img");
         thumbnail.src = video.thumbnail;
         thumbnail.alt = video.title;
         thumbnail.loading = "lazy";
 
-        // Create iframe (hidden initially, shown when "Play" is clicked)
         const iframe = document.createElement("iframe");
         iframe.src = video.src;
         iframe.allowFullscreen = true;
         iframe.style.display = "none";
         iframe.loading = "lazy";
 
-        // Create play button
         const playButton = document.createElement("button");
         playButton.textContent = "Play Video";
 
@@ -73,11 +67,9 @@ function showPage() {
             thumbnail.style.display = "none"; // Hide thumbnail
         });
 
-        // Create description (video title)
         const description = document.createElement("p");
         description.innerHTML = `<strong>${video.title}</strong>`;
 
-        // Append elements to the grid item
         gridItem.appendChild(thumbnail);
         gridItem.appendChild(iframe);
         gridItem.appendChild(description);
@@ -85,7 +77,6 @@ function showPage() {
         videoGrid.appendChild(gridItem);
     });
 
-    // Update the visibility of the pagination buttons
     updateButtonStates();
 }
 
@@ -102,14 +93,11 @@ function previousPage() {
 }
 
 function updateButtonStates() {
-    // Update visibility of "Previous" and "Next" buttons
     document.getElementById("prev-btn").style.display = prevPageToken ? "inline-block" : "none";
     document.getElementById("next-btn").style.display = nextPageToken ? "inline-block" : "none";
 }
 
-// Fetch initial videos on page load
 fetchVideos();
 
-// Attach event listeners to the pagination buttons
 document.getElementById('prev-btn').addEventListener('click', previousPage);
 document.getElementById('next-btn').addEventListener('click', nextPage);

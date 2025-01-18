@@ -1,4 +1,3 @@
-// Disable developer tools shortcuts and right-click
 document.addEventListener('keydown', (event) => {
     const blockedKeys = ['F12', 'I', 'J', 'U'];
     const ctrlShift = event.ctrlKey && event.shiftKey;

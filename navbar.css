@@ -1,0 +1,113 @@
+.companyname {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin: 20px;
+    text-transform: uppercase;
+    color: #007BFF;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  }
+  
+  .navbar {
+    background: linear-gradient(to bottom, #007BFF, #0056b3);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  .navbar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .navbar li {
+    position: relative;
+  }
+  
+  .navbar a {
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 1em;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .navbar a:hover {
+    background-color: #0056b3;
+    color: #ffeb3b;
+  }
+  
+  @media (max-width: 768px) {
+    .navbar ul {
+      display: none; 
+      flex-direction: column; 
+      width: 100%;
+    }
+  
+    .navbar li {
+      width: 100%;
+      text-align: center;
+    }
+  
+    .navbar a {
+      padding: 10px 20px;
+    }
+  
+    .navbar.active ul {
+      display: block;
+    }
+  }
+  
+  .burger {
+    display: none;
+    cursor: pointer;
+    color: white;
+    font-size: 24px;
+    padding: 10px;
+  }
+  
+  @media (max-width: 768px) {
+    .burger {
+      display: block;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+  }
+  
+  .navbar li ul.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    display: none;
+    min-width: 150px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  
+  .navbar li:hover ul.dropdown {
+    display: block;
+  }
+  
+  .navbar li ul.dropdown li {
+    width: 100%;
+  }
+  
+  .navbar li ul.dropdown a {
+    padding: 10px;
+    color: #333;
+    font-weight: normal;
+    text-transform: none;
+  }
+  
+  .navbar li ul.dropdown a:hover {
+    background: #f7f7f7;
+    color: #007BFF;
+  }
