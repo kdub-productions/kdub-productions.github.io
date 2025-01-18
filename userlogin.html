@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <link rel="stylesheet" href="mainstyle.css">
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <div class="companyname">Genisis Reborn</div>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li>
+        <a href="#about">About</a>
+        <ul class="dropdown">
+          <li><a href="#team">Our Team</a></li>
+          <li><a href="#mission">Our Mission</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#services">Services</a>
+        <ul class="dropdown">
+          <li><a href="#web">Web Design</a></li>
+          <li><a href="#seo">SEO</a></li>
+        </ul>
+      </li>
+      <li><a href="#artists">Artists</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="userlogin.html">Login/Signup</a></li>
+    </ul>
+  </nav>
+
+  <!-- Login Form -->
+  <div class="login-container">
+    <h1>Login</h1>
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <button type="submit" class="login-button">Login</button>
+    </form> 
+    <p>Don't have an account? <a href="/signup">Sign up</a></p>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+  
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+  
+      try {
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password }),
+        });
+  
+        const data = await response.json();
+        if (response.ok) {
+          alert(data.message); // "Login successful"
+          console.log('Token:', data.token);
+        } else {
+          alert(data.message); // Error message
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred');
+      }
+    });
+  </script>
+</body>
+</html>

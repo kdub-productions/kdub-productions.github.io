@@ -7,22 +7,52 @@
     <link rel="stylesheet" href="mainstyle.css">
 </head>
 <body>
-    <div id="artist_div_grid">
-        <ul class="artist_list">
-            <li><a class="name" href="https://www.youtube.com/@KDUB_25">Kdub</a></li>
-            <li><a class="name">PrimoSKT</a></li>
-            <li><a class="name">Rahk Da Ahk</a></li>
+    <div class="companyname">Genisis Reborn</div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li>
+                <a href="#about">About</a>
+                <ul class="dropdown">
+                    <li><a href="#team">Our Team</a></li>
+                    <li><a href="#mission">Our Mission</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#services">Services</a>
+                <ul class="dropdown">
+                    <li><a href="#web">Web Design</a></li>
+                    <li><a href="#seo">SEO</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#artists">Artists</a>
+                <ul class="dropdown">
+                    <li><a href="https://www.youtube.com/@KDUB_25">KDUB</a></li>
+                    <li><a href="#">PrimoSKT</a></li>
+                    <li><a href="#">Yung Rahk</a></li>
+                </ul>
+            </li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="userlogin.html" target="_blank">Login/Signup</a></li>
         </ul>
-    </div>
+    </nav>
+
     <!-- Videos -->
+    <div id="loading" style="display: none;">Loading...</div>
     <div class="grid-container" id="video-grid"></div>
-
     <div class="pagination">
-        <button id="prev-btn" onclick="previousPage()">Previous</button>
-        <button id="next-btn" onclick="nextPage()">Next</button>
+        <button id="prev-btn">Previous</button>
+        <button id="next-btn">Next</button>
     </div>
 
-    <script src="mainpage.js"></script>
-    <script src="optimize.js"></script>
+    <script src="mainpage.js" defer></script>
+    <script src="optimize.js" defer></script>
+    <script>
+        document.getElementById('prev-btn').addEventListener('click', previousPage);
+        document.getElementById('next-btn').addEventListener('click', nextPage);
+    </script>
 </body>
 </html>

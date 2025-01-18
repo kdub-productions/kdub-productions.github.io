@@ -1,4 +1,4 @@
-const apiKey = 'AIzaSyBWXAiWVwtsv3lrMKC3eXSQs7UqjSVWLt8';
+const apiKey = 'AIzaSyBWXAiWVwtsv3lrMKC3eXSQs7UqjSVWLt8'; // Warning: Do not expose API keys in production!
 const channelId = 'UCxLInTOesiaJPHRcr-q56aQ';
 const videosPerPage = 12;
 let nextPageToken = '';
@@ -10,6 +10,10 @@ async function fetchVideos(pageToken = '') {
 
     try {
         const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const data = await response.json();
 
         if (data.error) {
@@ -24,13 +28,13 @@ async function fetchVideos(pageToken = '') {
             thumbnail: item.snippet.thumbnails.medium.url,
         }));
 
-        nextPageToken = data.nextPageToken || null;
-        prevPageToken = data.prevPageToken || null;
+        nextPageToken = data.nextPageToken || '';
+        prevPageToken = data.prevPageToken || '';
 
         showPage();
     } catch (error) {
         console.error("Fetch Error:", error);
-        alert("Failed to fetch videos. Check the console for details.");
+        alert("Failed to fetch videos. Please check your network or API key.");
     }
 }
 
@@ -45,10 +49,12 @@ function showPage() {
         const thumbnail = document.createElement("img");
         thumbnail.src = video.thumbnail;
         thumbnail.alt = video.title;
+        thumbnail.loading = "lazy";
 
         const iframe = document.createElement("iframe");
         iframe.src = video.src;
         iframe.allowFullscreen = true;
+        iframe.style.display = "none";
         iframe.loading = "lazy";
 
         const playButton = document.createElement("button");
@@ -90,4 +96,5 @@ function updateButtonStates() {
     document.getElementById("next-btn").style.display = nextPageToken ? "inline-block" : "none";
 }
 
+// Fetch initial videos on page load
 fetchVideos();
