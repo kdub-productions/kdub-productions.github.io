@@ -62,9 +62,9 @@ function showPage() {
         playButton.textContent = "Play Video";
 
         playButton.addEventListener("click", () => {
-            iframe.style.display = "block"; // Show iframe
-            playButton.style.display = "none"; // Hide play button
-            thumbnail.style.display = "none"; // Hide thumbnail
+            iframe.style.display = "block";
+            playButton.style.display = "none";
+            thumbnail.style.display = "none"; 
         });
 
         const description = document.createElement("p");

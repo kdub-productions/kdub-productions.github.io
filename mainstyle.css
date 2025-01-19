@@ -12,7 +12,7 @@
   background-color: #007BFF;
   color: white;
   border: none;
-  border-radius: 20px;
+  border-radius: 5px;
   padding: 10px 20px;
   font-size: 1em;
   cursor: pointer;
@@ -66,21 +66,6 @@ form {
   flex-direction: column;
   width: 100%;
   max-width: 400px;
-  animation: bounceIn 2s ease;
-}
-
-@keyframes bounceIn {
-  from {
-      transform: scale(0.8);
-      opacity: 0;
-  }
-  60% {
-      transform: scale(1.1);
-      opacity: 1;
-  }
-  to {
-      transform: scale(1);
-  }
 }
 
 input, textarea, button {

@@ -53,8 +53,6 @@
             <button type="submit">Send Message</button>
         </form>
     </div>
-
-    <!-- Particles JS for effects -->
     <div class="particles" id="particles-js" aria-hidden="true"></div>
     
     <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
@@ -62,7 +60,7 @@
         particlesJS("particles-js", {
             particles: {
                 number: { value: 80, density: { enable: true, value_area: 800 } },
-                color: { value: "#ffffff" },
+                color: { value: "#8efef3" },
                 shape: { type: "circle" },
                 opacity: { value: 0.5 },
                 size: { value: 3, random: true },
@@ -79,7 +77,48 @@
             retina_detect: true,
         });
     </script>
-    <script src="mainpage.js" defer></script>
+    <script>
+        // Burger menu toggle functionality
+        const burger = document.querySelector('.burger');
+        const navbar = document.querySelector('.navbar');
+      
+        burger.addEventListener('click', () => {
+          navbar.classList.toggle('active');  // Toggle the active class to show/hide the navbar items
+        });
+      </script> 
+      <script>
+        document.addEventListener('keydown', (event) => {
+            const blockedKeys = ['F12', 'I', 'J', 'U'];
+            const ctrlShift = event.ctrlKey && event.shiftKey;
+        
+            if (event.key === 'F12' || 
+               (ctrlShift && blockedKeys.includes(event.key)) || 
+               (event.ctrlKey)) {
+                event.preventDefault();
+            }
+        });
+        
+        document.getElementById('next-btn').addEventListener('click', () => {
+            console.log('Next button clicked');
+            nextPage();
+        });
+        
+        document.getElementById('prev-btn').addEventListener('click', () => {
+            console.log('Previous button clicked');
+            previousPage();
+        });
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const burger = document.querySelector('.burger');
+            const navbar = document.querySelector('.navbar ul');
+            
+            if (burger && navbar) {
+                burger.addEventListener('click', () => {
+                    navbar.classList.toggle('show');
+                });
+            }
+        });
+        </script>
     <script src="theme.js" defer></script>
     <script src="optimize.js" defer></script>
 </body>
