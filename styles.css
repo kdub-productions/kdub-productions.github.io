@@ -128,7 +128,6 @@
         right: 0;
         background: var(--primary-gradient);
         display: none;
-        overflow: hidden;
       transition: max-height 0.3s ease; /* Smooth transition */
     }
 
