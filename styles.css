@@ -84,7 +84,9 @@
 }
 
 .nav-links li:hover .dropdown {
+    position: absolute;
     display: block;  /* Shows the dropdown when the parent <li> is hovered */
+    z-index: 4;
 }
 
 .dropdown li {
@@ -100,7 +102,12 @@
 .dropdown a:hover {
     color: #2575fc;
 }
-
+.particles {
+    position: absolute;
+    height: 100vh;
+    width: 100%;
+    z-index: -7;
+}
 /* Mobile Navbar */
 @media (max-width: 768px) {
     .companyname {
@@ -121,11 +128,15 @@
         right: 0;
         background: var(--primary-gradient);
         display: none;
+        overflow: hidden;
+      transition: max-height 0.3s ease; /* Smooth transition */
     }
 
     .nav-links.active {
         display: flex;
         padding: 10px;
+        position: absolute;
+        top: 65px;
     }
 }
 
@@ -182,10 +193,13 @@
 
 /* Footer */
 footer {
+    position: absolute;
     text-align: center;
     padding: 20px 0;
     background-color: #333;
     color: white;
+    width: 100%;
+    z-index: -8;
 }
 
 /* Button styles */
