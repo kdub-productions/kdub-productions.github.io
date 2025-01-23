@@ -26,12 +26,6 @@ function toggleTheme() {
 // Initialize the theme when the page loads
 setInitialTheme();
 
-// Add event listener to the toggle button (ensure the button exists)
-const themeToggleButton = document.getElementById('theme-toggle');
-if (themeToggleButton) {
-    themeToggleButton.addEventListener('click', toggleTheme);
-}
-
 // Dynamic listener for color scheme changes
 const darkSchemeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 darkSchemeMediaQuery.addEventListener('change', handleColorSchemeChange);

@@ -30,3 +30,13 @@ body {
     --input-bg-color: #444;
     --border-color: #555;
   }
+
+
+  .particales {
+    position: absolute; /* or fixed, depending on your need */
+    z-index: -1; /* Pushes the element behind other elements */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
