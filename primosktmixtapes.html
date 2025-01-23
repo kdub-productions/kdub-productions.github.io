@@ -20,6 +20,7 @@
                     <a href="#artists">Artists</a>
                     <ul class="dropdown">
                         <li><a href="https://www.youtube.com/@KDUB_25" target="_blank">KDUB</a></li>
+                        <li><a href="https://www.youtube.com/@YungBlazer777" target="_blank">PrimoSKT</a></li>
                         <li><a href="https://www.youtube.com/@rahkdaahk7534" target="_blank">Yung Rahk</a></li>
                     </ul>
                 </li>
@@ -33,7 +34,6 @@
                 <li><a href="#mixtapes">Mixtapes</a>
                     <ul class="dropdown">
                         <li><a href="kdubmixtapes.html" target="_blank">KDUB</a></li>
-                        <li><a href="primosktmixtapes.html" target="_blank">PrimnoSKT</a></li>
                         <li><a href="yungrahkmixtapes.html" target="_blank">Yung Rahk</a></li>
                     </ul>
                 </li>
@@ -49,7 +49,26 @@
                             <button type="submit">Send Message</button>
                         </form>
                     </ul></li>
-                <li><a href="userlogin.html" target="_blank" class="login-btn">Login/Signup</a></li>
+                <li><a class="login-btn">Login/Signup</a>
+                    <ul class="dropdown">
+                        <div class="login-container">
+                            <h1>Login</h1>
+                            <form id="loginForm">
+                              <div class="form-group">
+                                <label for="username">Username:</label>
+                                <input type="text" id="username" name="username" required>
+                              </div>
+                              <div class="form-group">
+                                <label for="password">Password:</label>
+                                <input type="password" id="password" name="password" required>
+                              </div>
+                              <button type="submit" class="login-button">Login</button>
+                            </form>
+                            <p>Don't have an account? <a href="/signup">Sign up</a></p>
+                            <div id="loginFeedback" class="feedback"></div>
+                          </div>
+                    </ul>
+                </li>
             </ul>
         </nav>
     </header>
