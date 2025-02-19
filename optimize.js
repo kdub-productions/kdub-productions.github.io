@@ -8,6 +8,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+//loading
+
+window.addEventListener('load', function () {
+  // Get the preloader element
+  const preloader = document.getElementById('preloader');
+  
+  // Add a timeout to fade out the preloader smoothly
+  setTimeout(function() {
+      preloader.style.visibility = 'hidden'; // Hide preloader
+      preloader.style.opacity = '0'; // Fade out
+  }, 500); // Delay the fade-out slightly to ensure it is visible initially
+});
+
 // Ensure the video container does not resize when the play button is clicked
 const videoContainers = document.querySelectorAll('.video-container');
 

@@ -1,0 +1,94 @@
+/* Beats Grid Section */
+.beats-grid {
+    background-color: #111; /* Dark background to match your site's theme */
+    color: white; /* Light text color for readability */
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.beats-grid h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 40px;
+    color: var(--primary-gradient); /* Accent color to match your theme */
+}
+
+/* Grid Layout for Beats */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Responsive grid layout */
+    gap: 30px;
+    justify-items: center;
+    padding: 0 20px;
+}
+
+/* Individual Beat Card */
+.grid-item {
+    background-color: #222;  /* Darker background for each card */
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: var(--box-shadow);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Hover effects for Beat Cards */
+.grid-item:hover {
+    transform: translateY(-8px); /* Lift effect on hover */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); /* More prominent shadow on hover */
+}
+
+/* Title within each Beat Card */
+.grid-item h3 {
+    font-size: 1.75rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: var(--primary-gradient); /* Highlight the beat name with gradient */
+}
+
+/* Audio player inside each card */
+audio {
+    width: 100%;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    background-color: #333; /* Darker background for audio controls */
+}
+
+/* Buy Button */
+.buy-btn {
+    padding: 12px 25px;
+    background: var(--button-bg); /* Consistent button background */
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background 0.3s ease, transform 0.3s ease;
+    margin-top: 15px;
+    box-shadow: var(--box-shadow); /* Subtle shadow for buttons */
+}
+
+.buy-btn:hover {
+    background: var(--button-hover-bg); /* Hover effect on buttons */
+    transform: scale(1.05); /* Scale effect for a more interactive feel */
+}
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 768px) {
+    .grid-item {
+        padding: 20px; /* Slightly less padding on smaller screens */
+    }
+
+    .grid-item h3 {
+        font-size: 1.5rem; /* Smaller title on mobile */
+    }
+
+    .buy-btn {
+        font-size: 1rem;
+        padding: 10px 20px;
+    }
+}
